@@ -1,0 +1,27 @@
+<html>
+<head>
+    <title>{{title}}</title>
+</head>
+<body>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.css" />
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.js"></script>
+    <div id="map" style='height:720px' ></div>
+    <script type="text/javascript">
+        var map = L.map('map').setView([39.828, -98.35], 5);
+        L.tileLayer('http://{s}.tile.cloudmade.com/afcef51d31f44e25a175d01d086d7082/997/256/{z}/{x}/{y}.png',{
+            attribution: 'Map data &copy;',
+            maxZoom: 18
+        }).addTo(map);
+
+        var d = {{data|safe}};
+        d.forEach(function(p){
+            var marker = L.marker([p.lat, p.lon]).addTo(map);
+            marker.on('click', clickedOnMarker({'marker':marker,'p':p}));
+        });
+
+        function clickedOnMarker(e) {
+                e.marker.bindPopup("<ul><li>"+e.p.make+"</li><li>"+e.p.model+"</li><li><a href="+e.p.prob+">"+e.p.id+"</a></li>")
+        }
+    </script>
+</body>
+</html>
